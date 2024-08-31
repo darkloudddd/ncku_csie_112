@@ -1,0 +1,31 @@
+HW9
+
+1.
+struct_32_bits用bit field表達內容代表了32個bits的structure。
+typ_uni_u32_f內包含了一個struct_32_bits類型的structure(st_32bits)、32bits的整數與float，使此union的所有變數都有相同的地址，能以不同的方式進行存取。
+
+Print_32bits先將float指標轉型成整數指標，再使用&讓mask從高位元到低位元一一比對，得到輸入的float的bit pattern。
+Print_32bits_2將傳入的指標轉型成指向structure的指標，再一一檢查內容物為何。
+Print_64bits與Print_32bits原理相同。
+Print_64bits_2與Print_32bits_2原理相同，故省略，不然程式碼太長不好看。
+
+bit_to_float將使用者輸入的bit pattern在存入陣列後，用迴圈檢查哪些字元是'1'，用一個32bits的整數(一開始設為0)與mask |，就會使該bit得到結果1，mask每次迴圈皆右移1。
+bit_to_float_2因為uni_u32_f_tmp3內包含了一個struct_32_bits類型的structure(st_32bits)，在一一檢查arr[33]的內容物後，將st_32bits內的bits們設為與arr[33]相同(若該字元為1，將該對應bit設為1)，最後回傳同樣在uni_u32_f_tmp3內的float。
+bit_to_double與bit_to_float原理相同。
+bit_to_double_2與bit_to_float_2原理相同，故省略，不然程式碼太長不好看。
+
+
+2.1
+是,因為他的bit pattern如下:
+0 00000001 00000000000000000000000
+s   exp             frac
+s與frac已為最小值0,exp已為最小值1,若exp也為0,則此float會為0
+
+2.2
+bit pattern of 0.0:
+0000 0000 0000 0000 0000 0000 0000 0000
+
+2.3
+result:
+1.1754943508222875000000000000000000000000000000000000000000000000000000000000000000000000000000000000e-038 =1.1754943508222875000000000000000000000000000000000000000000000000000000000000000000000000000000000000e-038
+因為題目f1與f2的bit pattern一樣都是 0 00000001 00000000000000000000000,故判斷為相同
